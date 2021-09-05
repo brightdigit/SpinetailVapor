@@ -14,12 +14,12 @@ let package = Package(
     .library(name: "SpinetailVapor", targets: ["SpinetailVapor"])
   ],
   dependencies: [
-    .package(url: "https://github.com/shibapm/Komondor", from: "1.1.0"), // dev
-    .package(url: "https://github.com/eneko/SourceDocs", from: "1.2.1"), // dev
-    .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.47.0"), // dev
-    .package(url: "https://github.com/realm/SwiftLint", from: "0.43.0"), // dev
-    .package(url: "https://github.com/shibapm/Rocket.git", from: "1.2.0"), // dev
-    .package(url: "https://github.com/mattpolzin/swift-test-codecov", .branch("master")), // dev
+//    .package(url: "https://github.com/shibapm/Komondor", from: "1.1.0"), // dev
+//    .package(url: "https://github.com/eneko/SourceDocs", from: "1.2.1"), // dev
+//    .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.47.0"), // dev
+//    .package(url: "https://github.com/realm/SwiftLint", from: "0.43.0"), // dev
+//    .package(url: "https://github.com/shibapm/Rocket.git", from: "1.2.0"), // dev
+//    .package(url: "https://github.com/mattpolzin/swift-test-codecov", .branch("master")), // dev
     .package(url: "https://github.com/brightdigit/Spinetail", from: "0.1.0"),
     .package(url: "https://github.com/brightdigit/PrchVapor.git", from: "0.1.0")
   ],
@@ -36,6 +36,19 @@ let package = Package(
   let requiredCoverage: Int = 85
 
   let config = PackageConfiguration([
+    "rocket": [
+      "steps": [
+        ["hide_dev_dependencies": ["package_path": "Package@swift-5.5.swift"]],
+        "hide_dev_dependencies",
+        "git_add",
+        "commit",
+        "tag",
+        "unhide_dev_dependencies",
+        ["unhide_dev_dependencies": ["package_path": "Package@swift-5.5.swift"]],
+        "git_add",
+        ["commit": ["message": "Unhide dev dependencies"]]
+      ]
+    ],
     "komondor": [
       "pre-push": [
         "swift test --enable-code-coverage --enable-test-discovery",
