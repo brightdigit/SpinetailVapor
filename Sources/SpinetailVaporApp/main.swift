@@ -1,20 +1,20 @@
-import Vapor
+// swiftlint:disable force_try
 import Spinetail
 import SpinetailVapor
+import Vapor
 
+struct MissingValueError: Error {}
 
-struct MissingValueError : Error {
-  
-}
 guard let apiKey = ProcessInfo.processInfo.environment["API_KEY"] else {
   fatalError()
 }
+
 let app = try Application(.detect())
 defer { app.shutdown() }
 try! app.mailchimp.configure(withAPIKey: apiKey)
 app.get("hello") { req -> EventLoopFuture<HTTPStatus> in
   let client = req.mailchimp.client
-  
+
   let subject = req.query["subject"] ?? "Hello World"
   let body = req.query["body"] ?? "Hello World"
   return client.request(
@@ -30,17 +30,23 @@ app.get("hello") { req -> EventLoopFuture<HTTPStatus> in
         recipients: .init(
           listId: "6f357ca335"
         ),
-        settings: .init(fromName: "Leo", replyTo: "leogdion+mailchimpdev@brightdigit.com", subjectLine: subject, templateId: templateId)
+        settings: .init(
+          fromName: "Leo",
+          replyTo: "leogdion+mailchimpdev@brightdigit.com",
+          subjectLine: subject,
+          templateId: templateId
+        )
       ))
-  }.flatMap(client.request).flatMapThrowing { response -> Campaigns.PostCampaignsIdActionsSend.Request in
+  }
+  .flatMap(client.request)
+  .flatMapThrowing {
+    response -> Campaigns.PostCampaignsIdActionsSend.Request in
     guard let campaignId = response.success?.id else {
       throw MissingValueError()
     }
     return Campaigns.PostCampaignsIdActionsSend.Request(campaignId: campaignId)
   }.flatMap(client.request).flatMapThrowing { response in
-      .init(statusCode: response.statusCode)
-    
-    
+    .init(statusCode: response.statusCode)
   }
 }
 
