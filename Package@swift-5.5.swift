@@ -21,7 +21,7 @@ let package = Package(
     .package(url: "https://github.com/shibapm/Rocket.git", from: "1.2.0"), // dev
     .package(url: "https://github.com/mattpolzin/swift-test-codecov", .branch("master")), // dev
     .package(url: "https://github.com/brightdigit/Spinetail", from: "0.1.0"),
-    .package(url: "https://github.com/brightdigit/PrchVapor.git", from: "0.1.1")
+    .package(path: "../PrchVapor")
   ],
   targets: [
     .target(name: "SpinetailVapor", dependencies: ["Spinetail", "PrchVapor"]),
