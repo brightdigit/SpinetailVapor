@@ -18,8 +18,8 @@ let package = Package(
     .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.47.0"), // dev
     .package(url: "https://github.com/realm/SwiftLint", from: "0.43.0"), // dev
     .package(url: "https://github.com/shibapm/Rocket.git", from: "1.2.0"), // dev
-    .package(path: "../Spinetail"),
-    .package(path: "../PrchVapor")
+    .package(url: "https://github.com/brightdigit/Spinetail", from: "0.2.0-beta.1"),
+    .package(url: "https://github.com/brightdigit/PrchVapor.git", from: "0.2.0-beta.1")
   ],
   targets: [
     .target(name: "SpinetailVapor", dependencies: ["Spinetail", "PrchVapor"]),
