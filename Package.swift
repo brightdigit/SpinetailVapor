@@ -22,7 +22,7 @@ let package = Package(
     .package(url: "https://github.com/brightdigit/PrchVapor.git", from: "0.2.0-beta.1")
   ],
   targets: [
-    .target(name: "SpinetailVapor", dependencies: ["Spinetail", "PrchVapor"]),
+    .target(name: "SpinetailVapor", dependencies: ["Spinetail", "PrchVapor"])
   ]
 )
 

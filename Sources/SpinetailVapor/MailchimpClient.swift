@@ -1,7 +1,7 @@
-import Vapor
 import Prch
 import PrchVapor
 import Spinetail
+import Vapor
 
 class MailchimpClient: ApplicationMailchimp {
   internal init(application: ClientContainer, api: Spinetail.Mailchimp.API? = nil) {
@@ -24,7 +24,7 @@ class MailchimpClient: ApplicationMailchimp {
   }
 
   var client: Prch.Client<SessionClient, Spinetail.Mailchimp.API> {
-    guard let api = self.api else {
+    guard let api = api else {
       fatalError("Mailchimp is not configured.")
     }
 
