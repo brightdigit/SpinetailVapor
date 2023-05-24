@@ -28,8 +28,10 @@ class MailchimpClient: ApplicationMailchimp {
       fatalError("Mailchimp is not configured.")
     }
 
-    
-    return MailchimpServiceImpl(session: SessionClient(client: application.client), api: api)
+    return MailchimpServiceImpl(
+      session: SessionClient(client: application.client),
+      api: api
+    )
   }
 
   func forRequest(_ request: Vapor.Request) -> Mailchimp {
