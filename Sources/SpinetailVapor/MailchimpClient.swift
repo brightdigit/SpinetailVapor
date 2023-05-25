@@ -4,7 +4,7 @@ import Spinetail
 import Vapor
 
 class MailchimpClient: ApplicationMailchimp {
-  internal init(application: ClientContainer, api: Spinetail.Mailchimp.API? = nil) {
+  internal init(application: ClientContainer, api: SpinetailAPI? = nil) {
     self.application = application
     self.api = api
   }
@@ -14,21 +14,24 @@ class MailchimpClient: ApplicationMailchimp {
   }
 
   let application: ClientContainer
-  var api: Spinetail.Mailchimp.API?
+  var api: SpinetailAPI?
 
   public func configure(withAPIKey apiKey: String) throws {
-    guard let api = Spinetail.Mailchimp.API(apiKey: apiKey) else {
+    guard let api = SpinetailAPI(apiKey: apiKey) else {
       throw MailchimpError.invalidAPIKey(apiKey)
     }
     self.api = api
   }
 
-  var client: Prch.Client<SessionClient, Spinetail.Mailchimp.API> {
+  var client: any MailchimpService {
     guard let api = api else {
       fatalError("Mailchimp is not configured.")
     }
 
-    return Client(api: api, session: SessionClient(client: application.client))
+    return MailchimpServiceImpl(
+      session: SessionClient(client: application.client),
+      api: api
+    )
   }
 
   func forRequest(_ request: Vapor.Request) -> Mailchimp {
